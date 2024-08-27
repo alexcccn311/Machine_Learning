@@ -1,0 +1,162 @@
+83707: function(e, t, r) {
+        "use strict";
+        r.d(t, {
+            TQ: function() {
+                return eO
+            }
+        });
+        var n, o = r(6339), i = r(21553), a = r(48737), s = r(3397), c = r.n(s), u = r(72735);
+        r(48194);
+        var l = ((n = l || {}).PushFrame = "PushFrame",
+        n.Response = "Response",
+        n.Message = "Message",
+        n)
+          , d = c()("im:idl:transport")
+          , h = c()("im:idl:transport-raw")
+          , p = class e {
+            constructor() {
+                this.cachedType = {},
+                this.loading = null,
+                this.loadSchema = ()=>{
+                    "undefined" != typeof window && window.requestIdleCallback(()=>{
+                        this._loadSchema()
+                    }
+                    )
+                }
+                ,
+                this._loadSchema = ()=>(this.loading || (this.loading = (0,
+                o.C)(this, null, function*() {
+                    if (u.roots.transport) {
+                        this.root = u.roots.transport,
+                        this.loading = Promise.resolve();
+                        return
+                    }
+                    yield(0,
+                    i.y)(),
+                    yield r.e(2986).then(r.bind(r, 69949)),
+                    this.root = u.roots.transport,
+                    this.loading = Promise.resolve()
+                })),
+                this.loading)
+            }
+            static get instance() {
+                return e.__instance ? e.__instance : e.__instance = new e
+            }
+            static addRelation(t, r) {
+                e.relation[t] = r,
+                e.relation[r] = t
+            }
+            static setRelation(t) {
+                e.relation = (0,
+                o.i)((0,
+                o.i)({}, e.relation), null != t ? t : {})
+            }
+            getType(t) {
+                let r = t.replace(a.nl, "")
+                  , n = this.cachedType[r];
+                if (n)
+                    return n;
+                try {
+                    let n = [e.relation[t], e.relation[r], r, t].filter(e=>e)
+                      , o = n.map(t=>e.typeHintPrefix.map(e=>`${e}.${t}`)).reduce((e,t)=>e.concat(t)).concat(n);
+                    d("search types", o);
+                    let i = o.reduce((e,t)=>e && "function" == typeof e ? e : t.split(".").reduce((e,t)=>null == e ? void 0 : e[t], this.root), void 0);
+                    if ("function" != typeof i)
+                        throw Error("cannot find type");
+                    return i
+                } catch (e) {
+                    return d(`no current schema[${String(r)}]`),
+                    null
+                }
+            }
+            decode(e, t) {
+                return (0,
+                o.C)(this, null, function*() {
+                    var r, n, o, i, a, s, c, u, l;
+                    if (yield this._loadSchema(),
+                    t)
+                        return this._decode(e, t);
+                    let[d,h] = yield this._decodeFrameOrResponse(e)
+                      , p = null != (i = null != (o = null == (n = null == (r = null == h ? void 0 : h.headers) ? void 0 : r.find(e=>"im-cursor" === e.key)) ? void 0 : n.value) ? o : d.cursor) ? i : ""
+                      , f = null != (u = null != (c = null == (s = null == (a = null == h ? void 0 : h.headers) ? void 0 : a.find(e=>"im-internal_ext" === e.key)) ? void 0 : s.value) ? c : d.internal_ext) ? u : "";
+                    return {
+                        response: d,
+                        frame: h,
+                        needAck: null != (l = d.need_ack) && l,
+                        cursor: p,
+                        internalExt: f
+                    }
+                })
+            }
+            encode(e, t) {
+                return (0,
+                o.C)(this, null, function*() {
+                    return yield this._loadSchema(),
+                    this._encode(e, t)
+                })
+            }
+            ack(e, t) {
+                return (0,
+                o.C)(this, null, function*() {
+                    var r, n, o, i;
+                    let s = null != (i = null != (o = null == (n = null == (r = e.headers) ? void 0 : r.find(e=>"im-internal_ext" === e.key)) ? void 0 : n.value) ? o : t.internal_ext) ? i : "";
+                    return yield this.encode({
+                        payload_type: a.AG.Ack,
+                        payload: function(e) {
+                            let t = [];
+                            for (let r of e) {
+                                let e = r.charCodeAt(0);
+                                e < 128 ? t.push(e) : e < 2048 ? (t.push(192 + (e >> 6)),
+                                t.push(128 + (63 & e))) : e < 65536 && (t.push(224 + (e >> 12)),
+                                t.push(128 + (e >> 6 & 63)),
+                                t.push(128 + (63 & e)))
+                            }
+                            return new Uint8Array(t)
+                        }(s),
+                        LogID: e.LogID
+                    }, "PushFrame")
+                })
+            }
+            ping() {
+                return this.encode({
+                    payload_type: a.AG.Hb
+                }, "PushFrame")
+            }
+            _decodeFrameOrResponse(e) {
+                return (0,
+                o.C)(this, null, function*() {
+                    try {
+                        let t = this._decode(e, "PushFrame")
+                          , r = yield this._extractResponse(t);
+                        return [this._decode(r, "Response"), t]
+                    } catch (t) {
+                        return [this._decode(e, "Response")]
+                    }
+                })
+            }
+            _extractResponse(t) {
+                return (0,
+                o.C)(this, null, function*() {
+                    var r;
+                    return (null == (r = t.headers) ? void 0 : r.some(e=>"compress_type" === e.key && "gzip" === e.value)) ? yield e.unGzip(t.payload) : t.payload
+                })
+            }
+            _decode(e, t) {
+                let r = this.getType(t);
+                if (!r)
+                    return;
+                let n = r.decode(e);
+                return d("decoded success", t, n),
+                h("decoded success", e),
+                n
+            }
+            _encode(e, t) {
+                let r = this.getType(t);
+                if (!r)
+                    return;
+                let n = r.encode(e).finish();
+                return d("encoded success", t, e),
+                h("encoded success", n),
+                n
+            }
+        }

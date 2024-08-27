@@ -1,0 +1,10 @@
+{
+    "WildCard-gpt": {
+        "base_url": "https://api.gptsapi.net/v1",
+        "api_key": "sk-bPxb047a5bb6a60addce27af79928dc4be069203924Rfkrf"
+    },
+    "QWen": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "api_key": "sk-a671b964670b499c9b78a887f6a14fc1"
+    }
+}

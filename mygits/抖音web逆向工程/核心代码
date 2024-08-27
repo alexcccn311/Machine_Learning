@@ -1,0 +1,49 @@
+ r.d(t, {
+        TQ: function() {
+            return eO
+        }
+    });
+    // 导出 TQ 函数，返回 eO 变量
+    var n, o = r(6339), i = r(21553), a = r(48737), s = r(3397), c = r.n(s), u = r(72735);
+    // 导入多个依赖模块并定义变量
+
+    r(48194);
+    // 额外的依赖模块，可能包含副作用
+    var l = ((n = l || {}).PushFrame = "PushFrame",
+    n.Response = "Response",
+    n.Message = "Message",
+    n)
+    // 定义一个包含常量的对象 l，表示不同的消息类型
+      , d = c()("im:idl:transport")
+      , h = c()("im:idl:transport-raw")
+      // 使用调试工具 c 为 transport 和 transport-raw 定义调试日志函数
+      , p = class e {
+        constructor() {
+            this.cachedType = {},
+             // 初始化缓存类型对象
+            this.loading = null,
+              // 初始化 loading 状态
+            this.loadSchema = ()=>{
+                "undefined" != typeof window && window.requestIdleCallback(()=>{
+                    this._loadSchema()
+                }
+                )
+            }
+            // 定义 _loadSchema 方法，异步加载 Schema 并更新状态
+            ,
+            this._loadSchema = ()=>(this.loading || (this.loading = (0,
+            o.C)(this, null, function*() {
+                if (u.roots.transport) {
+                    this.root = u.roots.transport,
+                    this.loading = Promise.resolve();
+                    return
+                }
+                yield(0,
+                i.y)(),
+                yield r.e(2986).then(r.bind(r, 69949)),
+                this.root = u.roots.transport,
+                this.loading = Promise.resolve()
+            })),
+            this.loading)
+        }
+        // 定义 _loadSchema 方法，异步加载 Schema 并更新状态

@@ -1,0 +1,5 @@
+chattts.egg-info/PKG-INFO
+chattts.egg-info/SOURCES.txt
+chattts.egg-info/dependency_links.txt
+chattts.egg-info/requires.txt
+chattts.egg-info/top_level.txt
